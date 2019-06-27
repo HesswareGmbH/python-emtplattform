@@ -1,0 +1,41 @@
+## Naming convention for the files
+
+The filenames need to show the domain they operate in and which
+use case / operation is performed within the script.
+
+For example a switching operation for a switchingpoint should
+reside in a script calles switchingpoint_switch.py, a firmware upgrade
+of a gateway needs to be called gateway_firmwareupdate.py.
+
+## Naming convention for the commandline arguments
+
+The following command line arguments need to
+be handled by the scripts:
+
+  * --url | -U: The Base-URI to use for the authentification
+  * --secrets | -S <file>: Secrets file to use
+  * --debug: Enable logging debug
+
+
+## Handling secrets.json
+
+Do not think about implementing your own secret handling, use
+cls.LoginDataHandler query the username, password and tenant for
+a specific URI.
+
+The secrets.json file must be present in the current working directory
+or must be specified at the command line.
+
+The format is straigt forward, it's a JSON Object which holds the login
+data based on the hostname we want to connect to:
+
+```
+{
+  "your.host.name.tld": {
+    "username": "myuser",
+    "password": "mysupersecretpassword",
+    "tenant": "my_tenant"
+  }
+}
+```
+

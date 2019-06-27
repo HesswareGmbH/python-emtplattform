@@ -1,0 +1,9 @@
+## ZENNER Hessware Python Access Library
+
+This repository can be used as an example to how to access the ZHW Cloud.
+
+## Usage
+
+Specify your secrets inside the secrets.json file, use secrets.json.template as
+an example how to use this file.
+
