@@ -3,6 +3,7 @@ import argparse
 import sys
 import logging
 import json
+from cls.cls import  CLSCenter
 from cls.datastore import Datastore
 from cls.logindatahandler import LoginDataHandler
 from cls.clsexceptions import CLSNoLoginInformationFound
@@ -29,7 +30,7 @@ if __name__ == "__main__":
                         required=True)
     parser.add_argument("-te", "--timestampEnd", dest="endTimestamp", help="timestamp end",
                         required=True)
-    parser.add_argument("-fo", "--fileOut", dest="fileOutput", help="write result into file", default=True)
+    parser.add_argument("-o", "--fileOut", dest="fileOutput", help="write result into file", default=True)
 
 
     args = parser.parse_args()
@@ -47,7 +48,7 @@ if __name__ == "__main__":
 
     # Try to login
     try:
-        datastore = Datastore(args.url, login_data.getUser(),
+        clscenter = CLSCenter(args.url, login_data.getUser(),
                               login_data.getPassword(), login_data.getTenant())
     except:
         logging.critical("Login to EMT Instance failed")
@@ -55,18 +56,21 @@ if __name__ == "__main__":
 
     # The use case specific code follows here
 
+    datastore = clscenter.getDatastore()
+
     aggregate = '[{"$match": {"data.ownernumber":"' + args.sensorId + '", "ts.datastore" : {"$gte": ' + args.startTimestamp + ', "$lte": ' + args.endTimestamp + ' }}},{"$sort":{"ts.datastore":1}}, {"$project": {"_id": 0, "_class": 0, "ts.expiresOn": 0}}  ]'
     logging.info("used aggregate: " + aggregate)
 
-    result = datastore.executeAggregate("datastore", "aggregate", aggregate)
+    result = datastore.aggregate(aggregate)
 
-    prettyResult = json.dumps(result, indent=4, sort_keys=True)
-    logging.info(prettyResult)
+    if result is not None:
+        prettyResult = json.dumps(result, indent=4, sort_keys=True)
+        logging.info(prettyResult)
 
-    if args.fileOutput == True:
-        filename = "sensor_" + args.sensorId + ".json"
-        f = open(filename, "w")
-        f.write(prettyResult)
+        if args.fileOutput == True:
+            filename = "sensor_" + args.sensorId + ".json"
+            f = open(filename, "w")
+            f.write(prettyResult)
 
 
     sys.exit(0)
