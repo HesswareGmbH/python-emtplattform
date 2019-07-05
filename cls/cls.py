@@ -6,6 +6,7 @@ import base64
 import logging
 from .clsmodule import CLSModule 
 from .switchingpoint import SwitchingPoint
+from .datastore import Datastore
 
 verify_SSL = True
 
@@ -126,6 +127,9 @@ class CLSCenter(object):
 
   def getSwitchingPoint(self, switchingPoint):
     return SwitchingPoint(switchingPoint, self)
+
+  def getDatastore(self):
+    return Datastore(self)
 
   def getData(self, module, function):
     url = "%s/%s/%s?api_key=%s" % (self.clscenter, module, function, self.key)
