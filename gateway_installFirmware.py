@@ -25,7 +25,7 @@ if __name__ == "__main__":
   # Script specific functions
   parser.add_argument("-m", "--mac", dest="mac", help="MAC of the gateway",
                       required=True)
-  parser.add_argument("--firmware", dest="update_uri", type=int, help="URI for the update",
+  parser.add_argument("--firmware", dest="update_uri", help="URI for the update",
                       required=True)
 
   args = parser.parse_args()
