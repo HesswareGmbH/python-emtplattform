@@ -68,6 +68,23 @@ class CLSCenter(object):
     # Some default headers
     self.headers["Accept"] = 'application/json'
 
+
+  def checkGWOnline(self, mac):
+    r = self.getData("clscenter", "connections/list")
+    if r.status_code == 200:
+      data = json.loads(r.text)
+    else:
+      raise Exception
+
+    m_list = map(''.join, zip(*[iter(mac)]*2))
+    mac = ':'.join(m_list)
+
+    for module in data:
+      if module["macAddress"] == mac:
+        return True
+
+    return False
+
   def getAllModules(self):
     r = self.getData("clscenter", "gateways")
     if r.status_code == 200:
@@ -96,6 +113,7 @@ class CLSCenter(object):
       modules[int(module["id"])].online = True
 
     return modules
+
 
   def getAllSwitchingPoints(self):
     r = self.getData("clscenter", "switchingpoints")
