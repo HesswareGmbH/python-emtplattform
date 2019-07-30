@@ -75,7 +75,7 @@ if __name__ == "__main__":
  
 
   table = PrettyTable()
-  table.field_names = ["Time", "Gateway", "Frametype", "FCTRL", "Payload"] 
+  table.field_names = ["Time", "Gateway", "Frametype", "Port", "FCounter", "FCTRL", "Payload"] 
   
   for result in results:
 
@@ -120,8 +120,15 @@ if __name__ == "__main__":
       frame_header = json.dumps(result["data"]["lora"]["fctrl"])
 
 
-    
-    table.add_row([timestring, clsbox, frame_type, frame_header, payload])
+    fport = "-"
+    if "fport" in result["data"]["lora"]:
+      fport = result["data"]["lora"]["fport"]
+
+    fcounter = ""
+    if "frame_counter" in result["data"]["lora"]:
+      fcounter = result["data"]["lora"]["frame_counter"]
+
+    table.add_row([timestring, clsbox, frame_type, fport, fcounter, frame_header, payload])
     #logging.info("%s\t%s\t%s %s\t%s", timestring, clsbox, frame_type, frame_header, payload)
 
   print(table)
