@@ -51,7 +51,7 @@ if __name__ == "__main__":
 
 
   # The use case specific code follows here
-
+  args.mac = clsCenter.convertMac(args.mac)
 
   module = clsCenter.getModule(args.mac)
   if module.installFirmware(args.update_uri) == False:
