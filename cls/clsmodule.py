@@ -21,8 +21,17 @@ class CLSModule(object):
       return None
 
     gw = gw[0] # We only need the first element
-    self.firmware = gw["content"]["versionData"]["baseVersion"]
-    self.ownerid = gw["content"]["ownernumber"]
+    if not "content" in gw:
+       return
+
+    if not "versionData" in gw["content"]:
+       return
+
+    if "baseVersion" in gw["content"]["versionData"]:
+        self.firmware = gw["content"]["versionData"]["baseVersion"]
+
+    if "ownernumber" in gw["content"]:
+        self.ownerid = gw["content"]["ownernumber"]
 
     # Check our online state
     self.online = center.checkGWOnline(mac)
@@ -75,8 +84,10 @@ class CLSModule(object):
 
     (json, header_code) = self.center.postJsonData("clscenter", "gateways/sendcommand/tomac", data=payload)
 
+    print(json)
+
     # On success we receive an empty body which is different from the other APIs
-    if header_code == requests.codes.ok:
+    if header_code/100 == 2:
       return True
 
     return False
@@ -92,7 +103,7 @@ class CLSModule(object):
     (json, header_code) = self.center.postJsonData("clscenter", "gateways/sendcommand/tomac", data=payload)
 
     # On success we receive an empty body which is different from the other APIs
-    if header_code == requests.codes.ok:
+    if header_code == 200 and len(json) == 0:
       return True
 
     return False
