@@ -85,7 +85,7 @@ if __name__ == "__main__":
       elif state["type"] == "SwitchOperation":
         ss = "The switchingpoint %s was modified to be %d percent: %s by %s" % (state["switchingPoint"], state["toValue"], state["state"], state["additionalInformation"]["user"])
       elif state["type"] == "PluginCall":
-        if state["pluginCall"] == "meter::sendLoraDownstream":
+        if state["pluginCall"] == "metersys::sendLoraDownstream":
           ss = "A lora downstream was sent"
         else:
           ss = "The plugin function %s was called" % state["pluginCall"]
