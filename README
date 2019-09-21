@@ -7,3 +7,30 @@ This repository can be used as an example to how to access the ZHW Cloud.
 Specify your secrets inside the secrets.json file, use secrets.json.template as
 an example how to use this file.
 
+## Most relevant scripts
+
+### gateway_getstatistics.py
+
+Print statistics like online / offline or switching operations.
+
+### gateway_installFirmware.py
+
+Install a new firmware version on a gateway.
+
+### sensor_generate_geomap.py
+
+Print the last geo postions of a sensor to the stdout. The output can be imported into maps or qgis.
+
+### sensor_last_values.py
+
+Pretty print the last sensor values in a table.
+
+### sensor_send_downlink.py
+
+Send a downlink to a given sensor.
+
+### switchingpoint_switch.py
+
+Set the value of an actor.
+
+ 
