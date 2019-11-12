@@ -58,7 +58,7 @@ if __name__ == "__main__":
 
     datastore = clscenter.getDatastore()
 
-    aggregate = '[{"$match": {"data.ownernumber":"' + args.sensorId + '", "ts.datastore" : {"$gte": ' + args.startTimestamp + ', "$lte": ' + args.endTimestamp + ' }}},{"$sort":{"ts.datastore":1}}, {"$project": {"_id": 0, "_class": 0, "ts.expiresOn": 0}}  ]'
+    aggregate = '[{"$match": {"data.ownernumber":"' + args.sensorId + '", "ts.datastore" : {"$gte": ' + str(args.startTimestamp) + ', "$lte": ' + str(args.endTimestamp) + ' }}},{"$sort":{"ts.datastore":1}}, {"$project": {"_id": 0, "_class": 0, "ts.expiresOn": 0}}  ]'
     logging.info("used aggregate: " + aggregate)
 
     result = datastore.aggregate(aggregate)
