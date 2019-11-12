@@ -75,7 +75,7 @@ if __name__ == "__main__":
  
 
   table = PrettyTable()
-  table.field_names = ["Time", "Gateway", "Frametype", "Port", "RSSI", "SNR", "FCounter", "FCTRL", "Payload"] 
+  table.field_names = ["Time", "Gateway", "Frametype", "Port", "Freq", "SF", "RSSI", "SNR", "FCounter", "FCTRL", "Payload"] 
   
   for result in results:
 
@@ -137,7 +137,16 @@ if __name__ == "__main__":
     if "frame_counter" in result["data"]["lora"]:
       fcounter = result["data"]["lora"]["frame_counter"]
 
-    table.add_row([timestring, clsbox, frame_type, fport, rssi, snr, fcounter, frame_header, payload])
+
+    freq = ""
+    if "freq" in result["data"]["lora"]:
+      freq = result["data"]["lora"]["freq"] / 1000 / 1000
+
+    sf = ""
+    if "datr" in result["data"]["lora"]:
+      sf = result["data"]["lora"]["datr"]
+
+    table.add_row([timestring, clsbox, frame_type, fport, freq, sf, rssi, snr, fcounter, frame_header, payload])
     #logging.info("%s\t%s\t%s %s\t%s", timestring, clsbox, frame_type, frame_header, payload)
 
   print(table)
