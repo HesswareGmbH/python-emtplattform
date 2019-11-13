@@ -30,7 +30,6 @@ if __name__ == "__main__":
   # Script specific functions
   parser.add_argument("-s", "--sensorId", dest="sensorId", help="id of the used sensor",
                       required=True)
-
   parser.add_argument("-ti", "--timingInterval", dest="timing", help="Hours of data to fetch",
 			type=int, required=True)
   args = parser.parse_args()
@@ -62,7 +61,15 @@ if __name__ == "__main__":
   endTimestamp = int(time.time())
   startTimestamp = endTimestamp - (args.timing * 60 * 60)
 
-  aggregate = '[{"$match": {"data.ownernumber":"' + args.sensorId + '", "ts.datastore" : {"$gte": ' + str(startTimestamp) + ', "$lte": ' + str(endTimestamp) + ' }}},{"$sort":{"ts.datastore":-1}}, {"$project": {"_id": 0, "_class": 0, "ts.expiresOn": 0, "data.obis": 0, "data.unmapped":0}}  ]'
+  if len(args.sensorId) > 8:
+    # it's a deveui
+    aggregate = '[{"$match": {"data.ownernumber":"'
+  else:
+    # its a devaddr
+    aggregate = '[{"$match": {"data.lora.dev_addr":"'
+
+
+  aggregate = aggregate + args.sensorId + '", "ts.datastore" : {"$gte": ' + str(startTimestamp) + ', "$lte": ' + str(endTimestamp) + ' }}},{"$sort":{"ts.datastore":-1}}, {"$project": {"_id": 0, "_class": 0, "ts.expiresOn": 0, "data.obis": 0, "data.unmapped":0}}  ]'
 
   results = datastore.aggregate(aggregate)
   
