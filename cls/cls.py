@@ -87,8 +87,8 @@ class CLSCenter(object):
 
   def getModulesOnline(self):
     # Now set the online status depending on the connection list
-    r = self.getData("clscenter", "connections/list")
-    if r.status_code == 200:
+    r, status_code = self.getData("clscenter", "connections/list")
+    if status_code == 200:
       data = json.loads(r.text)
     else:
       logging.error("Unable to get the connection list (http code %d, data: %s)", r.status_code,r.text)
